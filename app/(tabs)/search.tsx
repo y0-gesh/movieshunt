@@ -10,6 +10,7 @@ import { View, Text, Image, FlatList, ActivityIndicator } from "react-native";
 
 const Search = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [lastTrackedQuery, setLastTrackedQuery] = useState("");
 
   const {
     data: movies,
@@ -26,22 +27,28 @@ const Search = () => {
   );
 
   useEffect(() => {
-    // updateSearchCount(searchQuery, movies[0]);
-
-
-    const timeoutId = setTimeout(async () => {
+    const timeoutId = setTimeout(() => {
       if (searchQuery.trim()) {
-        await loadMovies();
-
-        if(movies?.length > 0 && movies?.[0]) 
-          await updateSearchCount(searchQuery, movies[0]);
-
+        loadMovies();
       } else {
         reset();
       }
     }, 500);
     return () => clearTimeout(timeoutId);
   }, [searchQuery]);
+  
+
+  useEffect(() => {
+    if (
+      searchQuery.trim() &&
+      movies?.length > 0 &&
+      searchQuery !== lastTrackedQuery
+    ) {
+      updateSearchCount(searchQuery, movies[0]);
+      setLastTrackedQuery(searchQuery);
+    }
+  }, [movies]);
+  
 
   return (
     <View className="flex-1 bg-primary">
