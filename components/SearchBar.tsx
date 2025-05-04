@@ -14,7 +14,7 @@ const SearchBar = ({ placeholder, value, onChangeText, onPress }: Props) => {
     <View className="flex-row items-center bg-dark-200 rounded-full px-5 py-4 shadow-md">
       <Image
         source={icons.search}
-        className="w-5 h-5"
+        className="size-5"
         resizeMode="contain"
         tintColor="#AB8BFF"
       />
