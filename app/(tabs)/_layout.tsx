@@ -75,7 +75,7 @@ const _Layout = () => {
           title: "Save",
           headerShown: false,
           tabBarIcon: ({ focused }) => (
-            <TabIcon focused={focused} icon={icons.save} title="Save" />
+            <TabIcon focused={focused} icon={icons.save} title="Saved" />
           ),
         }}
       />
