@@ -1,5 +1,5 @@
 // track the searches made by a user
-import { Client, Databases, ID, Query } from "appwrite";
+import { Account, Client, Databases, ID, Query } from "appwrite";
 
 const DATABASE_ID = process.env.EXPO_PUBLIC_APPWRITE_DATABASE_ID!;
 const COLLECTION_ID = process.env.EXPO_PUBLIC_APPWRITE_COLLECTION_ID!;
@@ -9,6 +9,7 @@ const client = new Client()
   .setProject(process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID!);
 
 const database = new Databases(client);
+const account = new Account(client);
 
 export const updateSearchCount = async (query: string, movie: Movie) => {
   try {
@@ -46,7 +47,6 @@ export const updateSearchCount = async (query: string, movie: Movie) => {
   }
 };
 
-
 export const getTrendingMovies = async (): Promise<TrendingMovie[] | undefined> => {
   try{
     const result = await database.listDocuments(DATABASE_ID, COLLECTION_ID, [
@@ -59,4 +59,51 @@ export const getTrendingMovies = async (): Promise<TrendingMovie[] | undefined> 
     console.log(error);
     return undefined;
   }
-}
+};
+
+// Register a new user
+export const registerUser = async (email: string, password: string, name: string) => {
+  try {
+    const response = await account.create(ID.unique(), email, password, name);
+    console.log("User registered:", response);
+    return response;
+  } catch (error) {
+    console.error("Error registering user:", error);
+    throw error;
+  }
+};
+
+// Login a user
+export const loginUser = async (email: string, password: string) => {
+  try {
+    const response = await account.createEmailPasswordSession(email, password);
+    console.log("User logged in:", response);
+    return response;
+  } catch (error) {
+    console.error("Error logging in user:", error);
+    throw error;
+  }
+};
+
+// Logout the user
+export const logoutUser = async () => {
+  try {
+    await account.deleteSession("current");
+    console.log("User logged out");
+  } catch (error) {
+    console.error("Error logging out user:", error);
+    throw error;
+  }
+};
+
+// Get current user
+export const getCurrentUser = async () => {
+  try {
+    const user = await account.get();
+    console.log("Current user:", user);
+    return user;
+  } catch (error) {
+    console.error("Error fetching current user:", error);
+    throw error;
+  }
+};
