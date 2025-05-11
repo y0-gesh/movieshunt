@@ -107,3 +107,17 @@ export const getCurrentUser = async () => {
     throw error;
   }
 };
+
+// Get saved movies by the user
+// export const getSavedMovies = async () => {
+//   try {
+//     const result = await database.listDocuments(DATABASE_ID, COLLECTION_ID, [
+//       Query.equal("userId", account.getSession("current").$id),
+//     ]);
+
+//     return result.documents as unknown as Movie[];
+//   } catch (error) {
+//     console.error("Error fetching saved movies:", error);
+//     throw error;
+//   }
+// };
