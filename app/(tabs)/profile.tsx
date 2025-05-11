@@ -2,7 +2,44 @@ import { icons } from "@/constants/icons";
 import { getCurrentUser, logoutUser } from "@/services/appwrite";
 import { Link, router } from "expo-router";
 import React from "react";
-import { View, Text, Image, Button, Alert } from "react-native";
+import {
+  Alert,
+  Button,
+  FlatList,
+  Image,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+
+const DATA = [
+  {
+    title: "Search",
+    link: "search",
+  },
+  {
+    title: "Saved",
+    link: "save",
+  },
+  {
+    title: "Login",
+    link: "auth/login",
+  },
+  {
+    title: "Sign Up",
+    link: "auth/register",
+  },
+];
+
+type ItemProps = { title: string; link: string };
+
+const Item = ({ title, link }: ItemProps) => (
+  <Link href={link} className="bg-pink-400 my-0.5 p-5 mx-2 rounded-lg">
+    <TouchableOpacity className="w-32 relative pl-5">
+      <Text className="text-white ">{title}</Text>
+    </TouchableOpacity>
+  </Link>
+);
 
 const Profile = () => {
   const handleLogout = async () => {
@@ -34,10 +71,10 @@ const Profile = () => {
 
   return (
     <View className="bg-primary flex-1 px-10">
-      <View className="flex mt-10">
+      <View className="flex mt-20">
         <View className="flex-row items-center gap-4">
           <View className="bg-blue-400 rounded-full p-5">
-            <Image source={icons.person} className="size-10" tintColor="#fff" />
+            <Image source={icons.person} className="size-8" tintColor="#fff" />
           </View>
           <View className="font-medium text-white">
             <Text className="text-white font-bold text-lg">{userName}</Text>
@@ -45,6 +82,18 @@ const Profile = () => {
           </View>
         </View>
       </View>
+
+      <FlatList
+        data={DATA}
+        style={{ marginTop: 50 }}
+        className="flex-1 bg-light-300"
+        renderItem={({ item }) => <Item title={item.title} link={item.link} />}
+      />
+
+      <View className="flex flex-row gap-2">
+        <Button title="Logout" onPress={handleLogout} />
+      </View>
+
       {/* <View className="flex justify-center items-center flex-1 flex-col gap-5">
         <View className="bg-amber-400 rounded-full p-5">
           <Image source={icons.person} className="size-10" tintColor="#fff" />
