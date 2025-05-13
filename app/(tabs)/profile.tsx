@@ -35,7 +35,7 @@ const DATA = [
 type ItemProps = { title: string; link: string };
 
 const Item = ({ title, link }: ItemProps) => (
-  <Link href={link} className="bg-pink-400 my-[1px] p-5 rounded-lg">
+  <Link href={link} className="hover:bg-teal-300 my-[1px] p-5 rounded-lg">
     <TouchableOpacity className="w-32 relative pl-5">
       <Text className="text-white ">{title}</Text>
     </TouchableOpacity>
@@ -53,8 +53,8 @@ const Profile = () => {
     }
   };
 
-  const [userName, setUserName] = React.useState("");
-  const [userMail, setUserMail] = React.useState("");
+  const [userName, setUserName] = React.useState("Name");
+  const [userMail, setUserMail] = React.useState("email");
 
   React.useEffect(() => {
     const fetchUserName = async () => {
@@ -73,6 +73,7 @@ const Profile = () => {
   return (
     <View className="bg-primary flex-1 px-10">
       <ScrollView>
+        {/* user profile */}
         <View className="flex mt-20">
           <View className="flex-row items-center gap-4">
             <View className="bg-blue-400 rounded-full p-5">
@@ -91,8 +92,8 @@ const Profile = () => {
 
         <FlatList
           data={DATA}
-          style={{ marginTop: 50 }}
-          className="flex-1 bg-light-300"
+          style={{ marginTop: 50, marginBottom: 50 }}
+          className="flex-1 hover:bg-teal-600"
           renderItem={({ item }) => (
             <Item title={item.title} link={item.link} />
           )}
