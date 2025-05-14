@@ -3,6 +3,7 @@ import { Account, Client, Databases, ID, Query } from "appwrite";
 
 const DATABASE_ID = process.env.EXPO_PUBLIC_APPWRITE_DATABASE_ID!;
 const COLLECTION_ID = process.env.EXPO_PUBLIC_APPWRITE_COLLECTION_ID!;
+const SAVED_COLLECTION = process.env.EXPO_SAVED_APPWRITE_COLLECTION_ID!;
 
 const client = new Client()
   .setEndpoint("https://cloud.appwrite.io/v1")
@@ -109,15 +110,16 @@ export const getCurrentUser = async () => {
 };
 
 // Get saved movies by the user
-// export const getSavedMovies = async () => {
-//   try {
-//     const result = await database.listDocuments(DATABASE_ID, COLLECTION_ID, [
-//       Query.equal("userId", account.getSession("current").$id),
-//     ]);
-
-//     return result.documents as unknown as Movie[];
-//   } catch (error) {
-//     console.error("Error fetching saved movies:", error);
-//     throw error;
-//   }
-// };
+export const getSavedMovies = async (userId: string) => {
+  try {
+    const result = await database.listDocuments(
+      DATABASE_ID,
+      SAVED_COLLECTION,
+      [Query.equal("user_id", userId)]
+    );
+    return result.documents as unknown as Movie[];
+  } catch (error) {
+    console.error("Error fetching saved movies:", error);
+    return error;
+  }
+};
